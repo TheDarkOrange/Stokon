@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  trader:
+    build: .
+    image: stokon:latest
+    environment:
+      - DATABASE_URL=postgresql://user:pass@db:5432/trading_db
+      - IB_HOST=ibkr_host
+      - IB_PORT=7496
+      - IB_CLIENT_ID=1
+      - EMAIL_HOST=smtp.example.com
+      - EMAIL_PORT=587
+      - EMAIL_USER=user@example.com
+      - EMAIL_PASS=secret
+      - SLACK_WEBHOOK_URL=https://hooks.slack.com/…
+      - METRICS_PUSHGATEWAY=http://pushgateway:9091
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - db
+      - pushgateway
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: trading_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  pushgateway:
+    image: prom/pushgateway:latest
+    ports:
+      - "9091:9091"
+
+volumes:
+  db_data:

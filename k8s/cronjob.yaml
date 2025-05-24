@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: daily-trader
+spec:
+  schedule: "15 15 * * 1-5" # UTC (18:15 Asia/Jerusalem)
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: trader
+              image: yourregistry/daily_trader:latest
+              imagePullPolicy: IfNotPresent
+              command: ["python", "-m", "src.main"]
+              envFrom:
+                - secretRef:
+                    name: trading-secrets
+          restartPolicy: OnFailure

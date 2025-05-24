@@ -1,0 +1,16 @@
+image:
+  repository: yourregistry/daily_trader
+  tag: latest
+  pullPolicy: IfNotPresent
+
+schedule: "15 15 * * 1-5" # UTC schedule for CronJob
+
+secrets:
+  databaseUrl: "postgresql://user:pass@db:5432/trading_db"
+  email:
+    host: "smtp.example.com"
+    port: 587
+    user: "user@example.com"
+    pass: "secret"
+  slackWebhookUrl: "https://hooks.slack.com/…"
+  pushgateway: "http://pushgateway:9091"

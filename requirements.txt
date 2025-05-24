@@ -1,0 +1,22 @@
+# requirements.txt
+
+pandas
+numpy
+yfinance
+sqlalchemy
+psycopg2-binary
+ta
+ib_insync
+pandas_market_calendars
+gym
+stable-baselines3
+python-dotenv
+scikit-learn
+prefect
+prometheus-client
+requests
+pytest
+pytest-cov
+black
+isort
+flake8

@@ -1,0 +1,4 @@
+apiVersion: v2
+name: daily-trader
+version: 0.1.0
+description: Daily equities trading system
