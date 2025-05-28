@@ -15,7 +15,7 @@ A fully-automated end-of-day equities trading engine with:
 
 - Python 3.10+
 - PostgreSQL 14
-- IB TWS or Gateway running
+- Alpaca account and API key
 - Docker & kubectl (for containerized deployments)
 
 ### Installation

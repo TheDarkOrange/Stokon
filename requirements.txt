@@ -6,7 +6,7 @@ yfinance
 sqlalchemy
 psycopg2-binary
 ta
-ib_insync
+alpaca-trade-api
 pandas_market_calendars
 gym
 stable-baselines3

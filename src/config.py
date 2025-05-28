@@ -15,10 +15,10 @@ TICKERS = os.getenv("TICKERS", "AAPL,MSFT,GOOG").split(",")
 SLIPPAGE = float(os.getenv("SLIPPAGE", 0.0005))
 COMMISSION = float(os.getenv("COMMISSION", 0.0002))
 
-# Interactive Brokers
-IB_HOST = os.getenv("IB_HOST")
-IB_PORT = int(os.getenv("IB_PORT", 0))
-IB_CLIENT_ID = int(os.getenv("IB_CLIENT_ID", 0))
+# Alpaca API
+ALPACA_BASE_URL = os.getenv("ALPACA_BASE_URL")
+ALPACA_KEY = os.getenv("ALPACA_KEY")
+ALPACA_SECRET = os.getenv("ALPACA_SECRET")
 
 # Email reporting
 EMAIL_HOST = os.getenv("EMAIL_HOST")

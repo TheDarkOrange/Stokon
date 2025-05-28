@@ -5,9 +5,9 @@ services:
     image: stokon:latest
     environment:
       - DATABASE_URL=postgresql://user:pass@db:5432/trading_db
-      - IB_HOST=ibkr_host
-      - IB_PORT=7496
-      - IB_CLIENT_ID=1
+      - ALPACA_BASE_URL=https://paper-api.alpaca.markets
+      - ALPACA_KEY=your_key
+      - ALPACA_SECRET=your_secret
       - EMAIL_HOST=smtp.example.com
       - EMAIL_PORT=587
       - EMAIL_USER=user@example.com
