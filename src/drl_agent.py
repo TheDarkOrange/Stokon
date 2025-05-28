@@ -2,7 +2,6 @@
 
 from stable_baselines3 import SAC
 from stable_baselines3.common.callbacks import CheckpointCallback
-from ib_insync import IB
 import pandas as pd
 
 from .env import DRLTradingEnv

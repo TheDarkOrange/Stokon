@@ -6,7 +6,7 @@ from .order_slicer import VWAPSlicer, TWAPSlicer
 
 
 class ExecutionEngine:
-    """Execute target weights via IB, using TWAP or VWAP slicing."""
+    """Execute target weights via a broker using TWAP or VWAP slicing."""
 
     def __init__(
         self,

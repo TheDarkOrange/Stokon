@@ -9,9 +9,9 @@ from .config import (
     TICKERS,
     SLIPPAGE,
     COMMISSION,
-    IB_HOST,
-    IB_PORT,
-    IB_CLIENT_ID,
+    ALPACA_BASE_URL,
+    ALPACA_KEY,
+    ALPACA_SECRET,
 )
 from .fetcher import DataFetcher
 from .cleaner import DataCleaner
@@ -45,13 +45,15 @@ def run_daily_job(dry_run: bool = False):
     strat = StrategyEngine()
     weights = strat.generate_signals(df_clean, feats)
 
-    # Determine if we can connect to IB
-    can_ib = not dry_run and IB_HOST and IB_PORT and IB_PORT > 0
+    # Determine if we can connect to the broker
+    can_broker = (
+        not dry_run and ALPACA_BASE_URL and ALPACA_KEY and ALPACA_SECRET
+    )
 
-    if not can_ib:
-        # Skip minute-level and execution if dry-run or no valid IB settings
+    if not can_broker:
+        # Skip minute-level and execution if dry-run or no valid broker settings
         logger.info(
-            "🔧 IB disabled: running EOD-only backtest, skipping minute-level and execution.")
+            "🔧 Broker disabled: running EOD-only backtest, skipping minute-level and execution.")
 
         # EOD backtest on daily close returns
         ret = df_clean.groupby("Ticker")["Close"].pct_change().fillna(0)
@@ -68,12 +70,12 @@ def run_daily_job(dry_run: bool = False):
             from .intraday_backtester import IntradayBacktester
             from .broker import BrokerInterface
         except ImportError as e:
-            logger.error("Missing IB modules: %s", e)
+            logger.error("Missing Alpaca modules: %s", e)
             raise
 
         # Intraday risk check (stop-loss)
         try:
-            mdf = MinuteDataFetcher(IB_HOST, IB_PORT, IB_CLIENT_ID)
+            mdf = MinuteDataFetcher(ALPACA_BASE_URL, ALPACA_KEY, ALPACA_SECRET)
             minute_df = mdf.fetch_daily_minute(TICKERS, today)
             intrabt = IntradayBacktester(SLIPPAGE, COMMISSION)
             intraday_rets = intrabt.run_intraday(weights, df_clean, minute_df)
@@ -93,7 +95,7 @@ def run_daily_job(dry_run: bool = False):
 
         # Live execution if intraday backtest succeeded
         try:
-            broker = BrokerInterface(IB_HOST, IB_PORT, IB_CLIENT_ID)
+            broker = BrokerInterface(ALPACA_BASE_URL, ALPACA_KEY, ALPACA_SECRET)
             exec_engine = ExecutionEngine(
                 broker, slicing_method="VWAP", twap_intervals=10)
             exec_df = exec_engine.execute(
@@ -131,7 +133,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="Skip IB connections & live execution; still compute performance",
+        help="Skip broker connections & live execution; still compute performance",
     )
     args = parser.parse_args()
     run_daily_job(dry_run=args.dry_run)
